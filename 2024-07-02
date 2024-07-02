@@ -1,0 +1,206 @@
+"""
+Dave Husk
+
+I'm starting to upload all my stuff.... god help me trying to organize it all...
+
+"""
+import math
+import sympy as sp
+from fractions import Fraction
+
+# 1. Fibonacci-Inspired Salmon Equation Solver
+def salmon_equation_solver(a, b, c):
+    delta = b**2 - 4*a*c
+    if delta == 5:
+        root1 = (-b + math.sqrt(delta)) / (2*a)
+        root2 = (-b - math.sqrt(delta)) / (2*a)
+        return (root1, root2)
+    else:
+        return "Error: Discriminant not equal to 5"
+
+# 2. Continued Fraction Representation of h
+def continued_fraction_h(n):
+    h_cf = Fraction(1, 1)
+    for _ in range(n-1):
+        h_cf = 1 + 1 / h_cf
+    return h_cf
+
+# 3. Galois Group Symmetry
+def galois_group_symmetry(a, b, c):
+    x = sp.symbols('x')
+    poly = sp.Poly(a*x**3 - 3*b*x**2 + c*x - 1, x)
+    galois_group = poly.galois_group()
+    return galois_group
+
+# 4. Diophantine Equation Solver
+def diophantine_solver(a, b, c):
+    x, y = sp.symbols('x y')
+    diophantine_eq = sp.Eq(a*x + b*y, c)
+    solutions = sp.diophantine(diophantine_eq)
+    return solutions
+
+# Define the variables for testing
+a, b, c = 1, -3, 1
+
+# Test the Salmon equation solver
+roots = salmon_equation_solver(a, b, c)
+
+# Test the continued fraction representation
+n = 5
+h_cf = continued_fraction_h(n)
+
+# Test the Galois group symmetry
+galois_group = galois_group_symmetry(a, b, c)
+
+# Test the Diophantine equation solver
+diophantine_solutions = diophantine_solver(3, 5, 7)
+
+roots, h_cf, galois_group, diophantine_solutions
+
+"""((2.618033988749895, 0.3819660112501051), Fraction(8, 5), (PermutationGroup([
+    (0 1 2),
+    (2)(0 1)]), False), {(5*t_0 + 14, -3*t_0 - 7)})"""
+
+
+import numpy as np
+
+class ThoughtTree:
+    def __init__(self, token, response_matrix):
+        self.token = token
+        self.response_matrix = response_matrix
+        self.children = []
+
+    def add_child(self, child):
+        self.children.append(child)
+
+    def reflect(self, freq_matrix, input_token):
+        # Calculate the Hurwitz Zeta frequency of the current node
+        zeta_freq = np.dot(freq_matrix, self.token)
+
+        # Generate a response based on the input token and the Hurwitz Zeta frequency
+        response = np.dot(self.response_matrix, input_token)
+        response = np.argmax(response)
+
+        # Reflect on the children nodes based on the Hurwitz Zeta frequency
+        for child in self.children:
+            child.reflect(freq_matrix, response)
+
+    def respond(self, input_token):
+        # Calculate the response based on the input token and the response matrix
+        response = np.dot(self.response_matrix, input_token)
+        response = np.argmax(response)
+
+        # Return the response
+        return response
+
+    def execute(self, indent=0):
+        print('  ' * indent + str(self.token))
+        for child in self.children:
+            child.execute(indent + 1)
+
+# Create the frequency matrix
+freq_matrix = np.random.rand(10, 10)
+
+# Create the response matrix
+response_matrix = np.random.rand(10, 10)
+
+# Create the thought tree
+root = ThoughtTree(np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), response_matrix)
+child1 = ThoughtTree(np.array([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]), response_matrix)
+child2 = ThoughtTree(np.array([21, 22, 23, 24, 25, 26, 27, 28, 29, 30]), response_matrix)
+child3 = ThoughtTree(np.array([31, 32, 33, 34, 35, 36, 37, 38, 39, 40]), response_matrix)
+
+root.add_child(child1)
+root.add_child(child2)
+child1.add_child(child3)
+
+# Test the thought tree
+input_token = np.array([41, 42, 43, 44, 45, 46, 47, 48, 49, 50])
+response = root.respond(input_token)
+response_result = response
+
+# Reflect on the thought tree
+root.reflect(freq_matrix, input_token)
+
+# Execute the thought tree
+execute_result = root.execute()
+
+response_result, execute_result
+
+"""
+[ 1  2  3  4  5  6  7  8  9 10]
+  [11 12 13 14 15 16 17 18 19 20]
+    [31 32 33 34 35 36 37 38 39 40]
+  [21 22 23 24 25 26 27 28 29 30]
+(2, None)
+"""
+
+
+import numpy as np
+import random
+
+class ThoughtTree:
+    def __init__(self, token, response_matrix):
+        self.token = token
+        self.response_matrix = response_matrix
+        self.children = []
+
+    def add_child(self, child):
+        self.children.append(child)
+
+    def reflect(self, freq_matrix, input_token):
+        # Calculate the Hurwitz Zeta frequency of the current node
+        zeta_freq = np.dot(freq_matrix, self.token)
+
+        # Generate a response based on the input token and the Hurwitz Zeta frequency
+        response = np.dot(self.response_matrix, input_token)
+        response = np.argmax(response)
+
+        # Reflect on the children nodes based on the Hurwitz Zeta frequency
+        for child in self.children:
+            child.reflect(freq_matrix, response)
+
+    def respond(self, input_token):
+        # Calculate the response based on the input token and the response matrix
+        response = np.dot(self.response_matrix, input_token)
+        response = np.argmax(response)
+
+        # Return the response
+        return response
+
+    def execute(self, indent=0):
+        print('  ' * indent + str(self.token))
+        for child in self.children:
+            child.execute(indent + 1)
+
+# Create the frequency matrix
+freq_matrix = np.random.rand(10, 10)
+
+# Create the response matrix
+response_matrix = np.random.rand(10, 10)
+
+# Create the thought tree
+root = ThoughtTree(np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), response_matrix)
+child1 = ThoughtTree(np.array([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]), response_matrix)
+child2 = ThoughtTree(np.array([21, 22, 23, 24, 25, 26, 27, 28, 29, 30]), response_matrix)
+child3 = ThoughtTree(np.array([31, 32, 33, 34, 35, 36, 37, 38, 39, 40]), response_matrix)
+
+root.add_child(child1)
+root.add_child(child2)
+child1.add_child(child3)
+
+# Test the thought tree
+input_token = np.array([41, 42, 43, 44, 45, 46, 47, 48, 49, 50])
+response = root.respond(input_token)
+response, root.execute()
+
+# Reflect on the thought tree
+root.reflect(freq_matrix, input_token)
+
+"""
+[ 1  2  3  4  5  6  7  8  9 10]
+  [11 12 13 14 15 16 17 18 19 20]
+    [31 32 33 34 35 36 37 38 39 40]
+  [21 22 23 24 25 26 27 28 29 30]
+(6, None)
+"""
