@@ -1,0 +1,142 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+from scipy.special import gamma, beta
+from sympy import symbols, integrate, diff, Function, pi, exp, sin, cos, tan, sqrt, I, Eq, dsolve, simplify
+import sympy as sp
+
+# Define symbols
+x, t, v, theta, r = sp.symbols('x t v theta r')
+phi = sp.Function('phi')(x, t)
+n = sp.Function('n')(x, t)
+v_x = sp.Function('v')(x, t)
+f = sp.Function('f')(x, v, t)
+C_f = sp.Function('C')(f)
+psi = sp.Function('psi')(x, t)
+V = sp.Function('V')(x, t)
+g, m, hbar, nu = sp.symbols('g m hbar nu')
+u = sp.Function('u')(x, t)
+J = sp.Function('J')(x, t)
+E = sp.Function('E')(x, t)
+B = sp.Function('B')(x, t)
+rho = sp.Function('rho')(x, t)
+epsilon_0, mu_0 = symbols('epsilon_0 mu_0')
+
+# Define equations
+
+# Reynolds' Transport Theorem
+RTT = integrate(diff(phi, t), x) - integrate(n * phi * v_x, x)
+print("Reynolds' Transport Theorem:")
+sp.pprint(RTT)
+print("\n")
+
+"""
+Reynolds' Transport Theorem:
+                                 ⌠
+  ⌠                              ⎮ ∂
+- ⎮ n(x, t)⋅φ(x, t)⋅v(x, t) dx + ⎮ ──(φ(x, t)) dx
+  ⌡                              ⎮ ∂t
+                                 ⌡
+"""
+
+# Boltzmann Transport Equation
+BTE = sp.Function('F')(x, t) * diff(f, v) + v_x * diff(f, x) + diff(f, t) - C_f
+print("Boltzmann Transport Equation:")
+sp.pprint(BTE)
+print("\n")
+
+"""
+                         ∂                        ∂                ∂
+-C(f(x, v, t)) + F(x, t)⋅──(f(x, v, t)) + v(x, t)⋅──(f(x, v, t)) + ──(f(x, v,t))
+                         ∂v                       ∂x               ∂t
+
+"""
+
+# Gross-Pitaevskii Equation
+GPE = I * hbar * diff(psi, t) - V * psi - g * psi * abs(psi)**2 + (hbar**2 / (2 * m)) * diff(psi, x, x)
+print("Gross-Pitaevskii Equation:")
+sp.pprint(GPE)
+print("\n")
+
+"""
+Gross-Pitaevskii Equation:
+>>> sp.pprint(GPE)
+                              2
+                          2  ∂
+                         h̅ ⋅───(ψ(x, t))
+                              2
+                     2      ∂x                 ∂
+- g⋅ψ(x, t)⋅│ψ(x, t)│  + ─────────────── + ⅈ⋅h̅⋅──(ψ(x, t)) - V(x, t)⋅ψ(x, t)
+                               2⋅m             ∂t
+"""
+
+# Transform of Burgers' Equation
+Burgers = -nu * diff(u, x, x) + u * diff(u, x) + diff(u, t)
+print("Transform of Burgers' Equation:")
+sp.pprint(Burgers)
+print("\n")
+
+"""
+      2
+     ∂                     ∂             ∂
+- ν⋅───(u(x, t)) + u(x, t)⋅──(u(x, t)) + ──(u(x, t))
+      2                    ∂x            ∂t
+    ∂x
+"""
+
+# Schrödinger Equation
+Schrodinger = I * hbar * diff(psi, t) - V * psi
+print("Schrödinger Equation:")
+sp.pprint(Schrodinger)
+print("\n")
+
+"""
+    ∂
+ⅈ⋅h̅⋅──(ψ(x, t)) - V(x, t)⋅ψ(x, t)
+    ∂t
+"""
+
+# Heat Equation
+Heat = diff(u, t) - diff(u, x, x)
+print("Heat Equation:")
+sp.pprint(Heat)
+print("\n")
+
+"""
+                2
+∂              ∂
+──(u(x, t)) - ───(u(x, t))
+∂t              2
+              ∂x
+"""
+
+# Laplace's Equation
+u, x, y, z = sp.symbols('u x y z')
+Laplace = diff(u, x, x) + diff(u, y, y) + diff(u, z, z)
+print("Laplace's Equation:")
+sp.pprint(Laplace)
+print("\n")
+
+"""
+0
+"""
+class rho:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __call__(self, x, y, z):
+        return self.x + self.y + self.z
+  
+# Navier-Stokes Equations (Simplified form)
+Navier_Stokes_x = sp.Function('u')(x, t) * sp.diff(sp.Function('u')(x, t), x) + sp.diff(sp.Function('u')(x, t), t)
+print("Navier-Stokes Equation (x-component):")
+sp.pprint(Navier_Stokes_x)
+print("\n")
+"""
+        ∂             ∂
+u(x, t)⋅──(u(x, t)) + ──(u(x, t))
+        ∂x            ∂t
+"""
+
